@@ -1,7 +1,6 @@
 # NOTES
-# This is a working but incomplete gameStill to do:
+# This is a functioning but incomplete game. Still to do:
 #   - Shift value of 11 to 1 when appropriate.
-#   - Allow for multiple hits.
 #   - (bonus) Integrate name.
 #   - (bonus) Save suits.
 #   - (bonus) Allow for multiple decks.
@@ -48,34 +47,34 @@ say d_hand # Used to evaluate hand. Remove later.
 
 # player hand
 p_val = val(p_hand)
-
 say "Your hand is #{p_hand}. Your hand value is #{p_val}."
-say "Would you like to stand (s) or hit (h)?"
-sh = gets.chomp
 
-if sh == "s"
-  say "Your hand value is #{p_val}."
-  p_val
-else
-  p_hand << deck52.pop
-  say "Your hand is now #{p_hand}."
-  p_val = val(p_hand)
-  say "Your hand value is now #{p_val}."
-  p_val
+
+while p_val <= 21
+  say "Would you like to stand (s) or hit (h)?"
+  sh = gets.chomp
+
+  if sh == "s"
+    say "Your final hand value is #{p_val}."
+    p_val
+    break
+  else
+    p_hand << deck52.pop
+    p_val = val(p_hand)
+    say "Your hand is now #{p_hand}. Your hand value is now #{p_val}."
+    p_val
+  end
 end
 
 # dealer hand
 d_val = val(d_hand)
-
 say "The dealer shows #{d_hand}. The dealer's hand value is #{d_val}."
 
-if d_val >= 17
-  say "The dealer's final hand value is #{d_val}."
-  d_val
-else
+while d_val < 17
   d_hand << deck52.pop
   d_val = val(d_hand)
-  say "The dealer now shows #{d_hand}. The dealer's hand value is now #{d_val}."
+  say "The dealer takes a card and now shows #{d_hand}. The dealer's hand 
+      value is now #{d_val}."
   d_val
 end
 
