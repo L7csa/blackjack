@@ -1,13 +1,33 @@
+# NOTES
+# This is a working but incomplete gameStill to do:
+#   - Shift value of 11 to 1 when appropriate.
+#   - Allow for multiple hits.
+#   - (bonus) Integrate name.
+#   - (bonus) Save suits.
+#   - (bonus) Allow for multiple decks.
+
 # basic methods and defs
 def say(s)
   puts "==>   " + s.to_s
 end
 
-# # bust value
-# bust = 21
+def val(hand)
+  total = 0
+  hand.each { |x| total += x }
+  total
+end
+
+p_hand = []
+d_hand = []
+
+p_val = val(p_hand)
+d_val = val(d_hand)
 
 # basic deck
-deck52 = [ 2, 3, 4, 5, 6, 7, 8 ,9, 10, 10, 10, 11 ]
+deck52 = [ 2, 3, 4, 5, 6, 7, 8 ,9, 10, 10, 10, 10, 11,
+           2, 3, 4, 5, 6, 7, 8 ,9, 10, 10, 10, 10, 11,
+           2, 3, 4, 5, 6, 7, 8 ,9, 10, 10, 10, 10, 11,
+           2, 3, 4, 5, 6, 7, 8 ,9, 10, 10, 10, 10, 11 ]
 
 # # get name
 # say "Welcome to TeaLeaf Blackjack. My name is Scott, and I will be your "
@@ -18,92 +38,67 @@ deck52 = [ 2, 3, 4, 5, 6, 7, 8 ,9, 10, 10, 10, 11 ]
 # say "Welcome, #{name}. Let's play some cards."
 
 # shuffle
-
 deck52.shuffle!
-p_hand = []
-d_hand = []
-p_val = 0
-d_val = 0
 
 # deal
-
 2.times { p_hand << deck52.pop }
-say p_hand
+say p_hand # Used to evaluate hand. Remove later.
 2.times { d_hand << deck52.pop }
-say d_hand
+say d_hand # Used to evaluate hand. Remove later.
 
-# # init deck (with numbers)
+# player hand
+p_val = val(p_hand)
 
-# def hand()
-#   deck52 = [ 2, 3, 4, 5, 6, 7, 8 ,9, 10, 10, 10, 11 ]
-# # shuffle
-#   deck52.shuffle!
-#   d_hand = []
-#   p_hand = []
-#   p_val = 0
-#   d_val = 0
+say "Your hand is #{p_hand}. Your hand value is #{p_val}."
+say "Would you like to stand (s) or hit (h)?"
+sh = gets.chomp
 
-# # deal
-#   def deal()
-#     d_hand = deck52.pop(2)
-#     p_hand = deck52.pop(2)
-#   end
+if sh == "s"
+  say "Your hand value is #{p_val}."
+  p_val
+else
+  p_hand << deck52.pop
+  say "Your hand is now #{p_hand}."
+  p_val = val(p_hand)
+  say "Your hand value is now #{p_val}."
+  p_val
+end
 
-# # display player value
-#   def disp_p_hand()
-#     p_hand.each do |x|
-#     p_val += x.to_i
-#     say "You have #{p_hand.each { |y| puts y }}. Your total is #{p_val}."
-#     end
-#   end
- 
-#   disp_p_hand()
+# dealer hand
+d_val = val(d_hand)
 
-# # ask for player action
-#   bust = false
-#   def action()
-#     while bust == false
-#     say "What would you like to do -- hit (h) or stand (s)?"
-#     hs = gets.chomp
+say "The dealer shows #{d_hand}. The dealer's hand value is #{d_val}."
 
-#       if hs == "s"
-#         dealer()
-#       elsif hs == "h"
-#         p_hand += deck52.pop
-#         disp_p_hand
-#       else
-#         say "That is not a valid action."
-#         action()
-#       end
-#     end
-#   end
+if d_val >= 17
+  say "The dealer's final hand value is #{d_val}."
+  d_val
+else
+  d_hand << deck52.pop
+  d_val = val(d_hand)
+  say "The dealer now shows #{d_hand}. The dealer's hand value is now #{d_val}."
+  d_val
+end
 
-#   action()
+# evaluation
+if p_val > 21
+  say "You've busted."
+elsif d_val > 21
+  say "The dealer busted. You won!"
+else
+  if d_val == p_val
+    say "It's a push."
+  elsif d_val > p_val
+    say "The dealer won."
+  else
+    say "You won!"
+  end
+end
 
-  
-
-
-#   # hit
-#   # stand
-
-# # dealer action
-
-# end
-
-# hand()
-
-# # Play again
-
-# def replay()
-#   puts "Would you like to play again? Enter 'y' or 'n'."
-#   replay = gets.chomp
-#   if replay.to_s == 'y'
-#   	hand()
-#   elsif replay.to_s == 'n'
-#     puts "Thank you for playing!"
-#   else
-#     replay()
-#   end
-# end
-
-# replay
+# Replay
+puts "Would you like to play again? Enter 'y' or 'n'."
+replay = gets.chomp
+if replay.to_s == 'y'
+  exec("ruby blackjack.rb")
+else replay.to_s == 'n'
+  puts "Thank you for playing!"
+end
