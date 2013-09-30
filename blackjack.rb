@@ -1,9 +1,9 @@
 # NOTES
 # This is a functioning but incomplete game. Still to do:
-#   - Shift value of 11 to 1 when appropriate.
-#   - (bonus) Integrate name.
-#   - (bonus) Save suits.
-#   - (bonus) Allow for multiple decks.
+#  - Show card values.
+#  - (bonus) Integrate name.
+#  - (bonus) Save suits.
+#  - (bonus) Allow for multiple decks.
 
 # basic methods and defs
 def say(s)
@@ -61,6 +61,14 @@ while p_val <= 21
   else
     p_hand << deck52.pop
     p_val = val(p_hand)
+    if p_val > 21 && p_hand.index(11) != nil
+      p_hand.insert(p_hand.index(11), 1)
+      p_hand
+      p_hand.delete_at(p_hand.index(11))
+      p_val = val(p_hand)
+    else
+      p_val = val(p_hand)
+    end
     say "Your hand is now #{p_hand}. Your hand value is now #{p_val}."
     p_val
   end
@@ -73,6 +81,14 @@ say "The dealer shows #{d_hand}. The dealer's hand value is #{d_val}."
 while d_val < 17
   d_hand << deck52.pop
   d_val = val(d_hand)
+  if d_val > 21 && d_hand.index(11) != nil
+    d_hand.insert(d_hand.index(11), 1)
+    d_hand
+    d_hand.delete_at(d_hand.index(11))
+    d_val = val(d_hand)
+  else
+    d_val = val(d_hand)
+  end
   say "The dealer takes a card and now shows #{d_hand}. The dealer's hand 
       value is now #{d_val}."
   d_val
